@@ -26,7 +26,7 @@ def get_float(prompt):
 # Function that handles data entry
 def add_entry():
     personal_information = {}
-    user_id = len(entries) + 1
+    user_id = len(entries) + 1 # Used the length the list for this
 
     name = input("Enter your name: ")
     age = get_integer("Enter your age: ")
@@ -88,7 +88,7 @@ def main_menu():
     print("Main Menu")
     print("1. Add personal information")
     print("2. View Personal information")
-    print("3. Calculate BMI (Body Mass Index)")
+    print("3. Calculate BMI (Body Mass Index)") 
     print("4. Exit")
 
     option = get_integer("Select an option: ")
