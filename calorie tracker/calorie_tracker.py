@@ -65,7 +65,7 @@ def display_entry():
         print("---------------")
 
 
-# Function to calculate BMI
+# Function to calculate BMI (Body Mass Index)
 def calculate_and_display_bmi():
     if not entries:
         print("No users found")
@@ -78,9 +78,29 @@ def calculate_and_display_bmi():
             height_in_meters = data["height"] / 100
             bmi = data["weight"] / height_in_meters ** 2
             print("BMI:", round(bmi, 2))
-            return bmi
+            return
         
     print("User ID not found")
+
+# Function to calculate BMR (Basal Metabolic Rate)
+def calculate_and_display_bmr():
+    if not entries:
+        print("No users found")
+        return
+    
+    user_id = get_integer("Enter the id of whose BMR you want to calculate: ")
+
+    for data in entries:
+        if data["id"] == user_id:
+            if data["sex"] == "M":
+                bmr = (10 * data["weight"]) + (6.25 * data["height"]) - (5 * data["age"]) + 5
+            else:
+                bmr =  (10 * data["weight"]) + (6.25 * data["height"]) - (5 * data["age"]) - 161
+            print("BMR:", round(bmr, 2))
+            return
+
+    print("User not found")
+
 
 
 # Main Menu 
@@ -89,7 +109,8 @@ def main_menu():
     print("1. Add personal information")
     print("2. View Personal information")
     print("3. Calculate BMI (Body Mass Index)") 
-    print("4. Exit")
+    print("4. Calculate BMR (Basal Metabolic Rate)")
+    print("5. Exit")
 
     option = get_integer("Select an option: ")
 
@@ -101,8 +122,11 @@ def main_menu():
 
     elif option == 3:
         calculate_and_display_bmi()     
-
+    
     elif option == 4:
+        calculate_and_display_bmr()
+
+    elif option == 5: 
         print("Bye")
         return False
         
