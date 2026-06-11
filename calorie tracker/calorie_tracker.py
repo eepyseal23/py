@@ -96,6 +96,7 @@ def calculate_and_display_bmr():
                 bmr = (10 * data["weight"]) + (6.25 * data["height"]) - (5 * data["age"]) + 5
             else:
                 bmr =  (10 * data["weight"]) + (6.25 * data["height"]) - (5 * data["age"]) - 161
+                
             print("BMR:", round(bmr, 2))
             return
 
