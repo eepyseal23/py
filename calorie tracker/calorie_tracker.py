@@ -140,11 +140,6 @@ def add_weight_record():
     print("User ID not found")
 
 
-
-    
-
-
-
 # Main Menu 
 def main_menu():
     print("Main Menu")
