@@ -1,6 +1,7 @@
 # Calorie Tracker
 
-# Data
+# Modules and Global Variables
+from datetime import datetime
 entries = []
 
 # Function that gets integers when picking options and entering data
@@ -13,6 +14,7 @@ def get_integer(prompt):
             else:
                 return number
 
+
 # Function that gets decimals when entering data
 def get_float(prompt):
     while True:
@@ -23,15 +25,16 @@ def get_float(prompt):
         else:
             return number
 
+
 # Function that handles data entry
 def add_entry():
     personal_information = {}
-    user_id = len(entries) + 1 # Used the length the list for this
+    user_id = len(entries) + 1 # Used the length of the list for this
 
     name = input("Enter your name: ")
     age = get_integer("Enter your age: ")
     weight = get_float("Enter your weight (kg): ")
-    height = get_float("Enter your height (cm): ")
+    height = get_integer("Enter your height (cm): ")
     
     while True:
         sex = input("Enter your biological sex (M/F)").upper() 
@@ -49,9 +52,11 @@ def add_entry():
     personal_information["weight"] = weight
     personal_information["height"] = height
     personal_information["sex"] = sex
+    personal_information["weight_history"] = [] # From add_weight_record so a list of dictionaries becomes a value
 
     entries.append(personal_information)
-    
+
+
 # Function that displays data
 def display_entry():
     if not entries:
@@ -82,6 +87,7 @@ def calculate_and_display_bmi():
         
     print("User ID not found")
 
+
 # Function to calculate BMR (Basal Metabolic Rate)
 def calculate_and_display_bmr():
     if not entries:
@@ -96,11 +102,46 @@ def calculate_and_display_bmr():
                 bmr = (10 * data["weight"]) + (6.25 * data["height"]) - (5 * data["age"]) + 5
             else:
                 bmr =  (10 * data["weight"]) + (6.25 * data["height"]) - (5 * data["age"]) - 161
-                
+
             print("BMR:", round(bmr, 2))
             return
 
     print("User not found")
+
+
+# Function to add weight record
+def add_weight_record():
+    weight_record = {}
+    recorded_weight = get_float("Enter your weight in kg: ")
+
+    while True:
+        date_of_recorded_weight = input("Enter the date of your weight (DD/MM/YYYY)")
+
+        try:
+            datetime.strptime(date_of_recorded_weight, "%d/%m/%Y")
+        except ValueError:
+            print("Invalid date")
+            continue
+
+        print("Date added successfully")
+        break
+
+    weight_record["weight"] = recorded_weight
+    weight_record["date"] = date_of_recorded_weight
+
+    user_id = get_integer("Enter user ID: ")
+
+    for data in entries:
+        if data["id"] == user_id:
+            data["weight_history"].append(weight_record)
+            print("Weight record added successfully")
+            return
+
+    print("User ID not found")
+
+
+
+    
 
 
 
@@ -111,7 +152,8 @@ def main_menu():
     print("2. View Personal information")
     print("3. Calculate BMI (Body Mass Index)") 
     print("4. Calculate BMR (Basal Metabolic Rate)")
-    print("5. Exit")
+    print("5. Add weight record")
+    print("6. Exit")
 
     option = get_integer("Select an option: ")
 
@@ -127,7 +169,10 @@ def main_menu():
     elif option == 4:
         calculate_and_display_bmr()
 
-    elif option == 5: 
+    elif option == 5:
+        add_weight_record()
+
+    elif option == 6: 
         print("Bye")
         return False
         
