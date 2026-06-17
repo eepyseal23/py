@@ -99,8 +99,6 @@ def calculate_and_display_bmi():
             print("BMI:", round(bmi, 2))
             return
         
-    print("User ID not found")
-
 
 # Function to calculate BMR (Basal Metabolic Rate)
 def calculate_and_display_bmr():
@@ -119,8 +117,6 @@ def calculate_and_display_bmr():
 
             print("BMR:", round(bmr, 2))
             return
-
-    print("User not found")
 
 
 # Function to add weight record
