@@ -21,6 +21,7 @@ def load_data():
     try:
         with open("users.json", "r") as file:
             entries = json.load(file)
+            
     except FileNotFoundError:
         entries = []
 
