@@ -401,8 +401,6 @@ def calorie_recommendations():
     print(f"Lean Bulk: {round(lean_bulk, 2)} kcal")
 
 
-
-
 # Main Menu 
 def main_menu():
     print("Main Menu")
