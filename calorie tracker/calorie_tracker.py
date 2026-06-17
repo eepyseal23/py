@@ -189,7 +189,7 @@ def delete_entry():
     print("Deleted successfully")
     
 
-# Function that displays data
+# Function that displays data (everything)
 def display_entry():
     if not entries:
         print("No entries found")
@@ -200,6 +200,21 @@ def display_entry():
         for key, value in data.items():
             print(key, value)
         print("---------------")
+
+
+# Function that displays data (single user)
+def display_single_entry():
+    if not entries:
+        print("No entries found")
+        return
+    
+    user = menu_for_choice_to_look_for_users()
+
+    for key, value in user.items():
+        if key != "weight_history":  # To avoid printing the long list of weights
+            print(key, value)
+
+    print(f"Weight records: {len(user['weight_history'])}")
 
 
 # Function to calculate BMI (Body Mass Index)
@@ -367,16 +382,17 @@ def display_weight_stats():
 def main_menu():
     print("Main Menu")
     print("1. Add personal information")
-    print("2. View personal information")
-    print("3. Calculate BMI (Body Mass Index)") 
-    print("4. Calculate BMR (Basal Metabolic Rate)")
-    print("5. Calculate TDEE (Total Daily Energy Expenditure)")
-    print("6. Add weight record")
-    print("7. View weight history")
-    print("8. Display weight stats")
-    print("9. Edit entry")
-    print("10. Delete entry")
-    print("11. Exit")
+    print("2. View all info")
+    print("3. View user's specific info ")
+    print("4. Calculate BMI (Body Mass Index)") 
+    print("5. Calculate BMR (Basal Metabolic Rate)")
+    print("6. Calculate TDEE (Total Daily Energy Expenditure)")
+    print("7. Add weight record")
+    print("8. View weight history")
+    print("9. Display weight stats")
+    print("10. Edit entry")
+    print("11. Delete entry")
+    print("12. Exit")
 
     option = get_integer("Select an option: ")
 
@@ -387,30 +403,33 @@ def main_menu():
         display_entry()
 
     elif option == 3:
+        display_single_entry()
+
+    elif option == 4:
         calculate_and_display_bmi()     
     
-    elif option == 4:
+    elif option == 5:
         calculate_and_display_bmr()
 
-    elif option == 5:
+    elif option == 6:
         calculate_tdee()
 
-    elif option == 6:
+    elif option == 7:
         add_weight_record()
 
-    elif option == 7:
+    elif option == 8:
         display_weight_history()
 
-    elif option == 8:
+    elif option == 9:
         display_weight_stats()
 
-    elif option == 9:
+    elif option == 10:
         edit_entry()
 
-    elif option == 10:
+    elif option == 11:
         delete_entry()
 
-    elif option == 11: 
+    elif option == 12: 
         print("Bye")
         return False
         
