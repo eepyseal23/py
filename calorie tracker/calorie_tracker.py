@@ -244,7 +244,7 @@ def calculate_tdee():
     if user["sex"] == "M":
         bmr = (10 * user["weight"]) + (6.25 * user["height"]) - (5 * user["age"]) + 5
     else:
-        bmr =  (10 * user["weight"]) + (6.25 * user["height"]) - (5 * user["age"]) - 161
+        bmr = (10 * user["weight"]) + (6.25 * user["height"]) - (5 * user["age"]) - 161
 
     print("1. Sedentary")
     print("2. Light Exercise")
