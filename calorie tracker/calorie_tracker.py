@@ -294,7 +294,8 @@ def main_menu():
     print("5. Add weight record")
     print("6. View weight history")
     print("7. Edit entry")
-    print("8. Exit")
+    print("8. Delete entry")
+    print("9. Exit")
 
     option = get_integer("Select an option: ")
 
@@ -319,7 +320,10 @@ def main_menu():
     elif option == 7:
         edit_entry()
 
-    elif option == 8: 
+    elif option == 8:
+        delete_entry()
+
+    elif option == 9: 
         print("Bye")
         return False
         
