@@ -145,6 +145,7 @@ def add_weight_record():
     for data in entries:
         if data["id"] == user_id:
             data["weight_history"].append(weight_record)
+            data["weight"] = recorded_weight   # Update weight in entries based on the user's entered info
             print("Weight record added successfully")
             return
 
