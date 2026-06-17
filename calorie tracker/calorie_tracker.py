@@ -103,7 +103,12 @@ def menu_for_choice_to_look_for_users():
 # Function that handles data entry
 def add_entry():
     personal_information = {}
-    user_id = len(entries) + 1 # Used the length of the list "entries" for this
+
+    if not entries:
+        user_id = 1    # If there are no users yet, start IDs at 1
+
+    else:
+        user_id = max(data["id"] for data in entries) + 1    # Otherwise, find the highest existing ID and add 1 (to prevent repeated ids)
 
     name = input("Enter your name: ")
     age = get_integer("Enter your age: ")
@@ -164,7 +169,25 @@ def edit_entry():
     print("Data updated successfully")
 
 
+# Function that deletes users
+def delete_entry():
+    if not entries:
+        print("Nothing to delete")
+        return 
+    
+    user = menu_for_choice_to_look_for_users()
 
+    confirmation = input("Are you sure? (Y/N): ").upper()
+
+    if confirmation != "Y":
+        print("Deletion cancelled")
+        return
+
+    entries.remove(user)
+
+    save_data()
+    print("Deleted successfully")
+    
 
 # Function that displays data
 def display_entry():
