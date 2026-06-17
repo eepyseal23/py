@@ -164,6 +164,8 @@ def edit_entry():
     print("Data updated successfully")
 
 
+
+
 # Function that displays data
 def display_entry():
     if not entries:
