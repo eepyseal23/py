@@ -366,13 +366,16 @@ def display_weight_stats():
     current_weight = user["weight"]
     highest_weight = max(weights)
     lowest_weight = min(weights)
+    average_weight = sum(weights) / len(weights)
 
     print(f"Current weight: {current_weight}")
     print(f"Highest weight: {highest_weight}")
     print(f"Lowest weight: {lowest_weight}")
+    print(f"Average weight: {round(average_weight, 2)}")
 
     initial_weight = weights[0]
     weight_difference = current_weight - initial_weight
+    
     
     if weight_difference < 0:
         print(f"Weight lost: {abs(weight_difference)} kg")
@@ -382,6 +385,8 @@ def display_weight_stats():
 
     else:
         print("No weight difference")
+
+    p
 
 
 # Funcion to provide recommendations based on your goals
