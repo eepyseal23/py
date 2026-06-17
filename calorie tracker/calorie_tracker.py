@@ -31,13 +31,13 @@ def get_float(prompt):
 # Function used to get ids 
 def get_id(prompt):
     while True:
-            user_id = get_integer(prompt)
+        user_id = get_integer(prompt)
 
-            for data in entries:
-                if data["id"] == user_id:
-                    return user_id
+        for data in entries:
+            if data["id"] == user_id:
+                return user_id
                 
-            print("User not found")
+        print("User not found")
            
 
 # Function that handles data entry
@@ -147,8 +147,6 @@ def add_weight_record():
             data["weight_history"].append(weight_record)
             print("Weight record added successfully")
             return
-
-    print("User ID not found")
 
 
 # Function to display one's weight history 
