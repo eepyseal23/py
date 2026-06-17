@@ -2,7 +2,7 @@
 # Enjoy (I hope so)
 
 # Modules and Global Variables
-from datetime import datetime    # for the dates in weight records
+from datetime import datetime    # For the dates in weight records
 import json    # To save data
 
 entries = []    # This list contains everyone's info
@@ -284,6 +284,44 @@ def display_weight_history():
         print("--------------------")
         
 
+# Function that displays weight stats (highest, lowest, current, gained/lost)
+def display_weight_stats():
+
+
+    if not entries:
+        print("No users found")
+        return
+    
+    user = menu_for_choice_to_look_for_users()
+    print("User found")
+
+    if not user["weight_history"]:
+        print("This user has no weight history")
+        return
+    
+    weights = [record["weight"] for record in user["weight_history"]]
+
+    current_weight = user["weight"]
+    highest_weight = max(weights)
+    lowest_weight = min(weights)
+
+    print(f"Current weight: {current_weight}")
+    print(f"Highest weight: {highest_weight}")
+    print(f"Lowest weight: {lowest_weight}")
+
+    initial_weight = weights[0]
+    weight_difference = current_weight - initial_weight
+    
+    if weight_difference < 0:
+        print(f"Weight lost: {abs(weight_difference)} kg")
+    
+    elif weight_difference > 0:
+        print(f"Weight gained: {weight_difference} kg")
+
+    else:
+        print("No weight difference")
+
+
 # Main Menu 
 def main_menu():
     print("Main Menu")
@@ -295,7 +333,8 @@ def main_menu():
     print("6. View weight history")
     print("7. Edit entry")
     print("8. Delete entry")
-    print("9. Exit")
+    print("9. Display weight stats")
+    print("10. Exit")
 
     option = get_integer("Select an option: ")
 
@@ -323,7 +362,10 @@ def main_menu():
     elif option == 8:
         delete_entry()
 
-    elif option == 9: 
+    elif option == 9:
+        display_weight_stats()
+
+    elif option == 10: 
         print("Bye")
         return False
         
@@ -332,10 +374,10 @@ def main_menu():
             
     return True
 
+# Load data before running the code
+load_data()    
 
 # These lines ensure that the code runs properly
-load_data()     # To load data before running the code
-
 while main_menu():
     pass
     
