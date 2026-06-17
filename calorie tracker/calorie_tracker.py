@@ -164,7 +164,7 @@ def display_weight_history():
             print("User found")
 
             if not data["weight_history"]:
-                print("This user has no weight story")
+                print("This user has no weight history")
                 return
     
             for user_info in data["weight_history"]:
