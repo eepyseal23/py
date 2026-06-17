@@ -385,9 +385,7 @@ def display_weight_stats():
 
     else:
         print("No weight difference")
-
-    p
-
+        
 
 # Funcion to provide recommendations based on your goals
 def calorie_recommendations():
