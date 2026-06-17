@@ -233,6 +233,49 @@ def calculate_and_display_bmr():
     return
 
 
+# This function calculates your TDEE (Total Daily Energy Expenditure)
+def calculate_tdee():
+    if not entries:
+        print("No users found")
+        return
+    
+    user = menu_for_choice_to_look_for_users()
+
+    if user["sex"] == "M":
+        bmr = (10 * user["weight"]) + (6.25 * user["height"]) - (5 * user["age"]) + 5
+    else:
+        bmr =  (10 * user["weight"]) + (6.25 * user["height"]) - (5 * user["age"]) - 161
+
+    print("1. Sedentary")
+    print("2. Light Exercise")
+    print("3. Moderate")
+    print("4. Active")
+    print("5. Very Active")
+
+    option = get_integer("Select your level of physical actiity: ")
+
+    if option == 1:
+        tdee = bmr * 1.2
+    
+    elif option == 2:
+        tdee = bmr * 1.375
+    
+    elif option == 3:
+        tdee = bmr * 1.55
+    
+    elif option == 4:
+        tdee = bmr * 1.725
+    
+    elif option == 5:
+        tdee = bmr * 1.9
+    
+    else:
+        print("Invalid choice")
+        return 
+
+    print(f"TDEE: {round(tdee, 2)} kcal")
+
+
 # Function to add weight record
 def add_weight_record():
     weight_record = {}
@@ -328,12 +371,13 @@ def main_menu():
     print("2. View personal information")
     print("3. Calculate BMI (Body Mass Index)") 
     print("4. Calculate BMR (Basal Metabolic Rate)")
-    print("5. Add weight record")
-    print("6. View weight history")
-    print("7. Edit entry")
-    print("8. Delete entry")
-    print("9. Display weight stats")
-    print("10. Exit")
+    print("5. Calculate TDEE (Total Daily Energy Expenditure)")
+    print("6. Add weight record")
+    print("7. View weight history")
+    print("8. Display weight stats")
+    print("9. Edit entry")
+    print("10. Delete entry")
+    print("11. Exit")
 
     option = get_integer("Select an option: ")
 
@@ -350,21 +394,24 @@ def main_menu():
         calculate_and_display_bmr()
 
     elif option == 5:
-        add_weight_record()
+        calculate_tdee()
 
     elif option == 6:
-        display_weight_history()
+        add_weight_record()
 
     elif option == 7:
-        edit_entry()
+        display_weight_history()
 
     elif option == 8:
-        delete_entry()
-
-    elif option == 9:
         display_weight_stats()
 
-    elif option == 10: 
+    elif option == 9:
+        edit_entry()
+
+    elif option == 10:
+        delete_entry()
+
+    elif option == 11: 
         print("Bye")
         return False
         
