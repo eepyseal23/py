@@ -2,10 +2,29 @@
 # Enjoy (I hope so)
 
 # Modules and Global Variables
-from datetime import datetime
-entries = []
+from datetime import datetime    # for the dates in weight records
+import json    # To save data
+
+entries = []    # This list contains everyone's info
 
 # Functions
+# Function to save data
+def save_data():
+    with open("users.json", "w") as file:
+        json.dump(entries, file, indent = 4)
+
+
+# Function to load data
+def load_data():
+    global entries
+
+    try:
+        with open("users.json", "r") as file:
+            entries = json.load(file)
+    except FileNotFoundError:
+        entries = []
+
+
 # Function that gets integers when picking options and entering data
 def get_integer(prompt):
     while True:
@@ -28,18 +47,49 @@ def get_float(prompt):
             return number
 
 
-# Function used to get ids 
-def get_id(prompt):
+# Function used to search users by id
+def get_user_by_id(prompt):
     while True:
         user_id = get_integer(prompt)
 
         for data in entries:
             if data["id"] == user_id:
-                return user_id
+                return data
                 
         print("User not found")
-           
 
+
+# Function used to search by names
+def get_user_by_name(prompt):
+    while True:
+        user_name = input(prompt)
+
+        for data in entries:
+            if data["name"] == user_name:
+                return data
+            
+        print("User not found")
+
+
+# A menu for the methods used to search for users either by name or by id                      
+def menu_for_choice_to_look_for_users():
+
+    while True:
+        print('Select an option: ')
+        print("1. Search user by ID")
+        print("2. Search user by name")
+
+        option = get_integer("Enter your choice: ")
+
+        if option == 1:
+            return get_user_by_id("Enter the id of the user: ")
+        
+        elif option == 2:
+            return get_user_by_name("Enter the name of the user: ")
+        
+        print("Invalid choice")
+    
+       
 # Function that handles data entry
 def add_entry():
     personal_information = {}
@@ -69,6 +119,7 @@ def add_entry():
     personal_information["weight_history"] = [] # For add_weight_record so a list of dictionaries becomes a value
 
     entries.append(personal_information)
+    save_data()
 
 
 # Function that displays data
@@ -90,14 +141,12 @@ def calculate_and_display_bmi():
         print("No users found")
         return
     
-    user_id = get_id("Enter the id of whose BMI you want to calculate: ")
+    user = menu_for_choice_to_look_for_users()
 
-    for data in entries:
-        if data["id"] == user_id:
-            height_in_meters = data["height"] / 100
-            bmi = data["weight"] / height_in_meters ** 2
-            print("BMI:", round(bmi, 2))
-            return
+    height_in_meters = user["height"] / 100
+    bmi = user["weight"] / height_in_meters ** 2
+    print("BMI:", round(bmi, 2))
+    return
         
 
 # Function to calculate BMR (Basal Metabolic Rate)
@@ -106,17 +155,15 @@ def calculate_and_display_bmr():
         print("No users found")
         return
     
-    user_id = get_id("Enter the id of whose BMR you want to calculate: ")
+    user = menu_for_choice_to_look_for_users()
 
-    for data in entries:
-        if data["id"] == user_id:
-            if data["sex"] == "M":
-                bmr = (10 * data["weight"]) + (6.25 * data["height"]) - (5 * data["age"]) + 5
-            else:
-                bmr =  (10 * data["weight"]) + (6.25 * data["height"]) - (5 * data["age"]) - 161
+    if user["sex"] == "M":
+        bmr = (10 * user["weight"]) + (6.25 * user["height"]) - (5 * user["age"]) + 5
+    else:
+        bmr =  (10 * user["weight"]) + (6.25 * user["height"]) - (5 * user["age"]) - 161
 
-            print("BMR:", round(bmr, 2))
-            return
+    print("BMR:", round(bmr, 2))
+    return
 
 
 # Function to add weight record
@@ -128,7 +175,7 @@ def add_weight_record():
         date_of_recorded_weight = input("Enter the date of your weight (DD/MM/YYYY)")
 
         try:
-            datetime.strptime(date_of_recorded_weight, "%d/%m/%Y")
+            datetime.strptime(date_of_recorded_weight, "%d/%m/%Y")     # Tries to read the entered info as a valid date
         except ValueError:
             print("Invalid date")
             continue
@@ -140,38 +187,34 @@ def add_weight_record():
     weight_record["unit"] = "kg"
     weight_record["date"] = date_of_recorded_weight
 
-    user_id = get_id("Enter user ID: ")
+    user = menu_for_choice_to_look_for_users()
 
-    for data in entries:
-        if data["id"] == user_id:
-            data["weight_history"].append(weight_record)
-            data["weight"] = recorded_weight   # Update weight in entries based on the user's entered info
-            print("Weight record added successfully")
-            return
+    user["weight_history"].append(weight_record)
+    user["weight"] = recorded_weight   # Update weight in entries based on the user's entered info
+
+    save_data()    # Save it
+
+    print("Weight record added successfully")
 
 
 # Function to display one's weight history 
 def display_weight_history():
     if not entries:
         print("No users found")
-        return 
+        return
     
-    user_id = get_id("Enter the id of whose weight history you want to see: ")
+    user = menu_for_choice_to_look_for_users()
+    print("User found")
 
-    for data in entries:
-        if data["id"] == user_id:
-            print("User found")
+    if not user["weight_history"]:
+        print("This user has no weight history")
+        return
 
-            if not data["weight_history"]:
-                print("This user has no weight history")
-                return
-    
-            for user_info in data["weight_history"]:
-                print("--------------------")
-                for key, value in user_info.items():
-                    print(key, value)
-                print("--------------------")
-            return
+    for user_info in user["weight_history"]:
+        print("--------------------")
+        for key, value in user_info.items():
+            print(key, value)
+        print("--------------------")
         
 
 # Main Menu 
@@ -214,7 +257,10 @@ def main_menu():
             
     return True
 
+
 # These lines ensure that the code runs properly
+load_data()     # To load data before running the code
+
 while main_menu():
     pass
     
