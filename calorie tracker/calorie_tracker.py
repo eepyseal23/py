@@ -1,18 +1,20 @@
-# Calorie Tracker
+# Welcome to my Calorie Tracker
+# Enjoy (I hope so)
 
 # Modules and Global Variables
 from datetime import datetime
 entries = []
 
+# Functions
 # Function that gets integers when picking options and entering data
 def get_integer(prompt):
-        while True:
-            try:
-                number = int(input(prompt))
-            except ValueError:
-                print("Enter a valid number")
-            else:
-                return number
+    while True:
+        try:
+            number = int(input(prompt))
+        except ValueError:
+            print("Enter a valid number")
+        else:
+            return number
 
 
 # Function that gets decimals when entering data
@@ -26,10 +28,22 @@ def get_float(prompt):
             return number
 
 
+# Function used to get ids 
+def get_id(prompt):
+    while True:
+            user_id = get_integer(prompt)
+
+            for data in entries:
+                if data["id"] == user_id:
+                    return user_id
+                
+            print("User not found")
+           
+
 # Function that handles data entry
 def add_entry():
     personal_information = {}
-    user_id = len(entries) + 1 # Used the length of the list for this
+    user_id = len(entries) + 1 # Used the length of the list "entries" for this
 
     name = input("Enter your name: ")
     age = get_integer("Enter your age: ")
@@ -52,7 +66,7 @@ def add_entry():
     personal_information["weight"] = weight
     personal_information["height"] = height
     personal_information["sex"] = sex
-    personal_information["weight_history"] = [] # From add_weight_record so a list of dictionaries becomes a value
+    personal_information["weight_history"] = [] # For add_weight_record so a list of dictionaries becomes a value
 
     entries.append(personal_information)
 
@@ -76,7 +90,7 @@ def calculate_and_display_bmi():
         print("No users found")
         return
     
-    user_id = get_integer("Enter the id of whose BMI you want to calculate: ")
+    user_id = get_id("Enter the id of whose BMI you want to calculate: ")
 
     for data in entries:
         if data["id"] == user_id:
@@ -94,7 +108,7 @@ def calculate_and_display_bmr():
         print("No users found")
         return
     
-    user_id = get_integer("Enter the id of whose BMR you want to calculate: ")
+    user_id = get_id("Enter the id of whose BMR you want to calculate: ")
 
     for data in entries:
         if data["id"] == user_id:
@@ -127,9 +141,10 @@ def add_weight_record():
         break
 
     weight_record["weight"] = recorded_weight
+    weight_record["unit"] = "kg"
     weight_record["date"] = date_of_recorded_weight
 
-    user_id = get_integer("Enter user ID: ")
+    user_id = get_id("Enter user ID: ")
 
     for data in entries:
         if data["id"] == user_id:
@@ -140,15 +155,40 @@ def add_weight_record():
     print("User ID not found")
 
 
+# Function to display one's weight history 
+def display_weight_history():
+    if not entries:
+        print("No users found")
+        return 
+    
+    user_id = get_id("Enter the id of whose weight history you want to see: ")
+
+    for data in entries:
+        if data["id"] == user_id:
+            print("User found")
+
+            if not data["weight_history"]:
+                print("This user has no weight story")
+                return
+    
+            for user_info in data["weight_history"]:
+                print("--------------------")
+                for key, value in user_info.items():
+                    print(key, value)
+                print("--------------------")
+            return
+        
+
 # Main Menu 
 def main_menu():
     print("Main Menu")
     print("1. Add personal information")
-    print("2. View Personal information")
+    print("2. View personal information")
     print("3. Calculate BMI (Body Mass Index)") 
     print("4. Calculate BMR (Basal Metabolic Rate)")
     print("5. Add weight record")
-    print("6. Exit")
+    print("6. View weight history")
+    print("7. Exit")
 
     option = get_integer("Select an option: ")
 
@@ -167,7 +207,10 @@ def main_menu():
     elif option == 5:
         add_weight_record()
 
-    elif option == 6: 
+    elif option == 6:
+        display_weight_history()
+
+    elif option == 7: 
         print("Bye")
         return False
         
