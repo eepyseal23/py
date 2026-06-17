@@ -45,6 +45,16 @@ def get_float(prompt):
             print("Enter a valid number")
         else:
             return number
+        
+# Function to get sex 
+def get_sex():
+    while True:
+        sex = input("Enter biological sex (M/F): ").upper()
+
+        if sex in ["M", "F"]:
+            return sex
+
+        print("Sex must be either M or F")
 
 
 # Function used to search users by id
@@ -75,7 +85,7 @@ def get_user_by_name(prompt):
 def menu_for_choice_to_look_for_users():
 
     while True:
-        print('Select an option: ')
+        print("Select an option: ")
         print("1. Search user by ID")
         print("2. Search user by name")
 
@@ -99,17 +109,8 @@ def add_entry():
     age = get_integer("Enter your age: ")
     weight = get_float("Enter your weight (kg): ")
     height = get_integer("Enter your height (cm): ")
+    sex = get_sex()
     
-    while True:
-        sex = input("Enter your biological sex (M/F)").upper() 
-
-        if sex in ["M", "F"]:
-            print("Added successfully")
-            print("We ask for your biological sex to provide better results")
-            break
-
-        print("Sex must be either M or F")
-
     personal_information["id"] = user_id
     personal_information["name"] = name
     personal_information["age"] = age
@@ -119,7 +120,48 @@ def add_entry():
     personal_information["weight_history"] = [] # For add_weight_record so a list of dictionaries becomes a value
 
     entries.append(personal_information)
+
     save_data()
+    print("Added successfully")
+
+
+# Function to edit a user's info
+def edit_entry():
+    if not entries:
+        print("This user has no entries to edit")
+        return
+
+    user = menu_for_choice_to_look_for_users()
+
+    print("1. Edit name")
+    print("2. Edit age")
+    print("3. Edit weight")
+    print("4. Edit height")
+    print("5. Edit sex")
+
+    option = get_integer("Select an option: ")
+
+    if option == 1:
+        user["name"] = input("Enter new name: ")
+
+    elif option == 2:
+        user["age"] = get_integer("Enter new age: ")
+
+    elif option == 3:
+        user["weight"] = get_float("Enter new weight: ")
+
+    elif option == 4:
+        user["height"] = get_float("Enter new height: ")
+
+    elif option == 5:
+        user["sex"] = get_sex()
+
+    else:
+        print("Invalid option")
+        return
+
+    save_data()
+    print("Data updated successfully")
 
 
 # Function that displays data
@@ -226,7 +268,8 @@ def main_menu():
     print("4. Calculate BMR (Basal Metabolic Rate)")
     print("5. Add weight record")
     print("6. View weight history")
-    print("7. Exit")
+    print("7. Edit entry")
+    print("8. Exit")
 
     option = get_integer("Select an option: ")
 
@@ -248,7 +291,10 @@ def main_menu():
     elif option == 6:
         display_weight_history()
 
-    elif option == 7: 
+    elif option == 7:
+        edit_entry()
+
+    elif option == 8: 
         print("Bye")
         return False
         
