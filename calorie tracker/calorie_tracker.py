@@ -46,6 +46,7 @@ def get_float(prompt):
         else:
             return number
         
+
 # Function to get sex 
 def get_sex():
     while True:
