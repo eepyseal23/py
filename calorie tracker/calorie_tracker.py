@@ -289,6 +289,7 @@ def calculate_tdee():
         return 
     
     print(f"TDEE: {round(tdee, 2)} kcal")
+    return tdee
 
 
 # Function to add weight record
@@ -379,6 +380,29 @@ def display_weight_stats():
         print("No weight difference")
 
 
+# Funcion to provide recommendations based on your goals
+def calorie_recommendations():
+    tdee = calculate_tdee()
+
+    if tdee is None:
+        return
+
+    maintenance = tdee
+    mild_deficit = tdee - 250
+    weight_loss = tdee - 500
+    aggressive = tdee - 1000
+    lean_bulk = tdee + 300
+
+    print("Calorie Recommendations")
+    print(f"Maintenance: {round(maintenance, 2)} kcal")
+    print(f"Mild Deficit: {round(mild_deficit, 2)} kcal")
+    print(f"Weight Loss: {round(weight_loss, 2)} kcal")
+    print(f"Aggressive Cut: {round(aggressive, 2)} kcal")
+    print(f"Lean Bulk: {round(lean_bulk, 2)} kcal")
+
+
+
+
 # Main Menu 
 def main_menu():
     print("Main Menu")
@@ -393,7 +417,8 @@ def main_menu():
     print("9. Display weight stats")
     print("10. Edit entry")
     print("11. Delete entry")
-    print("12. Exit")
+    print("12. View calorie recommendetions")
+    print("13. Exit")
 
     option = get_integer("Select an option: ")
 
@@ -430,7 +455,10 @@ def main_menu():
     elif option == 11:
         delete_entry()
 
-    elif option == 12: 
+    elif option == 12:
+        calorie_recommendations()
+
+    elif option == 13: 
         print("Bye")
         return False
         
