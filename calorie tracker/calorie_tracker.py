@@ -267,27 +267,30 @@ def calculate_tdee():
     print("4. Active")
     print("5. Very Active")
 
-    option = get_integer("Select your level of physical actiity: ")
+    while True:
+        option = get_integer("Select your level of physical actiity: ")
 
-    if option == 1:
-        tdee = bmr * 1.2
+        if option == 1:
+            tdee = bmr * 1.2
+            break
     
-    elif option == 2:
-        tdee = bmr * 1.375
+        elif option == 2:
+            tdee = bmr * 1.375
+            break
     
-    elif option == 3:
-        tdee = bmr * 1.55
+        elif option == 3:
+            tdee = bmr * 1.55
     
-    elif option == 4:
-        tdee = bmr * 1.725
+        elif option == 4:
+            tdee = bmr * 1.725
+            break
     
-    elif option == 5:
-        tdee = bmr * 1.9
+        elif option == 5:
+            tdee = bmr * 1.9
+            break
     
-    else:
         print("Invalid choice")
-        return 
-    
+
     print(f"TDEE: {round(tdee, 2)} kcal")
     return tdee
 
@@ -383,9 +386,6 @@ def display_weight_stats():
 # Funcion to provide recommendations based on your goals
 def calorie_recommendations():
     tdee = calculate_tdee()
-
-    if tdee is None:
-        return
 
     maintenance = tdee
     mild_deficit = tdee - 250
