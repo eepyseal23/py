@@ -280,6 +280,7 @@ def calculate_tdee():
     
         elif option == 3:
             tdee = bmr * 1.55
+            break
     
         elif option == 4:
             tdee = bmr * 1.725
