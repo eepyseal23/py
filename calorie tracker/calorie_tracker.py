@@ -287,7 +287,6 @@ def display_weight_history():
 # Function that displays weight stats (highest, lowest, current, gained/lost)
 def display_weight_stats():
 
-
     if not entries:
         print("No users found")
         return
