@@ -133,7 +133,7 @@ def add_entry():
 # Function to edit a user's info
 def edit_entry():
     if not entries:
-        print("This user has no entries to edit")
+        print("No users found")
         return
 
     user = menu_for_choice_to_look_for_users()
@@ -223,14 +223,17 @@ def calculate_and_display_bmr():
         return
     
     user = menu_for_choice_to_look_for_users()
-
-    if user["sex"] == "M":
-        bmr = (10 * user["weight"]) + (6.25 * user["height"]) - (5 * user["age"]) + 5
-    else:
-        bmr =  (10 * user["weight"]) + (6.25 * user["height"]) - (5 * user["age"]) - 161
+    bmr = calculate_bmr(user)
 
     print("BMR:", round(bmr, 2))
-    return
+
+
+# Function to calculate BMR (just to avoid repeating code)
+def calculate_bmr(user):
+    if user["sex"] == "M":
+        return (10 * user["weight"]) + (6.25 * user["height"]) - (5 * user["age"]) + 5
+
+    return (10 * user["weight"]) + (6.25 * user["height"]) - (5 * user["age"]) - 161
 
 
 # This function calculates your TDEE (Total Daily Energy Expenditure)
@@ -240,12 +243,8 @@ def calculate_tdee():
         return
     
     user = menu_for_choice_to_look_for_users()
-
-    if user["sex"] == "M":
-        bmr = (10 * user["weight"]) + (6.25 * user["height"]) - (5 * user["age"]) + 5
-    else:
-        bmr = (10 * user["weight"]) + (6.25 * user["height"]) - (5 * user["age"]) - 161
-
+    bmr = calculate_bmr(user)
+ 
     print("1. Sedentary")
     print("2. Light Exercise")
     print("3. Moderate")
@@ -272,7 +271,7 @@ def calculate_tdee():
     else:
         print("Invalid choice")
         return 
-
+    
     print(f"TDEE: {round(tdee, 2)} kcal")
 
 
