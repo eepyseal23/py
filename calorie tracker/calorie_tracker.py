@@ -76,7 +76,7 @@ def get_user_by_name(prompt):
         user_name = input(prompt)
 
         for data in entries:
-            if data["name"] == user_name:
+            if data["name"].lower() == user_name.lower():
                 return data
             
         print("User not found")
@@ -114,7 +114,7 @@ def add_entry():
     name = input("Enter your name: ")
     age = get_integer("Enter your age: ")
     weight = get_float("Enter your weight (kg): ")
-    height = get_integer("Enter your height (cm): ")
+    height = get_float("Enter your height (cm): ")
     sex = get_sex()
     
     personal_information["id"] = user_id
@@ -298,6 +298,10 @@ def calculate_tdee():
 
 # Function to add weight record
 def add_weight_record():
+    if not entries:
+        print("No entries found")
+        return
+    
     weight_record = {}
     recorded_weight = get_float("Enter your weight in kg: ")
 
@@ -373,9 +377,13 @@ def display_weight_stats():
     print(f"Lowest weight: {lowest_weight}")
     print(f"Average weight: {round(average_weight, 2)}")
 
-    initial_weight = weights[0]
+    history = sorted(
+        user["weight_history"],
+        key=lambda record: datetime.strptime(record["date"], "%d/%m/%Y")
+    )
+
+    initial_weight = history[0]["weight"]
     weight_difference = current_weight - initial_weight
-    
     
     if weight_difference < 0:
         print(f"Weight lost: {abs(weight_difference)} kg")
@@ -390,6 +398,9 @@ def display_weight_stats():
 # Funcion to provide recommendations based on your goals
 def calorie_recommendations():
     tdee = calculate_tdee()
+
+    if tdee is None:
+        return
 
     maintenance = tdee
     mild_deficit = tdee - 250
