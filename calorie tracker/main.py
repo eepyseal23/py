@@ -1,3 +1,5 @@
+#RUN THE PROGRAM ON THIS FILE
+
 from storage import load_data
 from input_helpers import get_integer
 from calorie_records import add_calorie_record
