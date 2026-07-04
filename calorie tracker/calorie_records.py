@@ -4,12 +4,10 @@ from storage import save_data
 from input_helpers import get_integer, get_float
 from user_functions import menu_for_choice_to_look_for_users
 
-
 # Function to make sure the user has calorie history
 def ensure_calorie_history(user):
     if "calorie_history" not in user:
         user["calorie_history"] = []
-
 
 # Function to add calorie record
 def add_calorie_record():
