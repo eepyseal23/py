@@ -64,6 +64,7 @@ def add_entry():
     personal_information["height"] = height
     personal_information["sex"] = sex
     personal_information["weight_history"] = [] # For add_weight_record so a list of dictionaries becomes a value
+    personal_information["calorie_history"] = []
 
     entries.append(personal_information)
 

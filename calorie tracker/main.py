@@ -1,5 +1,6 @@
 from storage import load_data
 from input_helpers import get_integer
+from calorie_records import add_calorie_record
 
 from user_functions import (
     add_entry,
@@ -41,7 +42,8 @@ def main_menu():
     print("12. View calorie recommendetions")
     print("13. Edit weight record")
     print("14. Delete weight record")
-    print("15. Exit")
+    print("15. Add calorie record")
+    print("16. Exit")
 
     option = get_integer("Select an option: ")
 
@@ -87,7 +89,10 @@ def main_menu():
     elif option == 14:
         delete_weight_record()
 
-    elif option == 15: 
+    elif option == 15:
+        add_calorie_record()
+
+    elif option == 16: 
         print("Bye")
         return False
         
