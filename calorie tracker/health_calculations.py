@@ -1,3 +1,7 @@
+from storage import entries
+from input_helpers import get_integer
+from user_functions import menu_for_choice_to_look_for_users
+
 # Function to calculate BMI (Body Mass Index)
 def calculate_and_display_bmi():
     if not entries:

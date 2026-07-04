@@ -1,3 +1,6 @@
+from storage import entries, save_data
+from input_helpers import get_integer, get_float, get_sex
+
 # Function used to search users by id
 def get_user_by_id(prompt):
     while True:
