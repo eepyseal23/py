@@ -23,6 +23,8 @@ def load_data():
             entries = json.load(file)    
     except FileNotFoundError:
         entries = []
+    except json.JSONDecodeError: # Triggered when the file is found but it is corrupted
+        entries = []
 
 
 # Function that gets integers when picking options and entering data
@@ -30,6 +32,11 @@ def get_integer(prompt):
     while True:
         try:
             number = int(input(prompt))
+
+            if number <= 0:
+                print("Enter a positive number")
+                continue
+
         except ValueError:
             print("Enter a valid number")
         else:
@@ -41,6 +48,11 @@ def get_float(prompt):
     while True:
         try:
             number = float(input(prompt))
+
+            if number <= 0:
+                print("Enter a positive number")
+                continue
+            
         except ValueError:
             print("Enter a valid number")
         else:
@@ -296,6 +308,20 @@ def calculate_tdee():
     return tdee
 
 
+# Function to recalculate one's current weight
+def update_current_weight(user):
+    if not user["weight_history"]:
+        return
+
+    history = sorted(
+        user["weight_history"],
+        key=lambda record: datetime.strptime(record["date"], "%d/%m/%Y")
+    )
+
+    most_recent_record = history[-1]
+    user["weight"] = most_recent_record["weight"]
+
+
 # Function to add weight record
 def add_weight_record():
     if not entries:
@@ -324,11 +350,102 @@ def add_weight_record():
     user = menu_for_choice_to_look_for_users()
 
     user["weight_history"].append(weight_record)
-    user["weight"] = recorded_weight   # Update weight in entries based on the user's entered info
 
+    update_current_weight(user)
     save_data()    # Save it
 
     print("Weight record added successfully")
+    
+
+# Function to edit weight records
+def edit_weight_record():
+    if not entries:
+        print("No entries found")
+        return
+    
+    user = menu_for_choice_to_look_for_users()
+
+    if not user["weight_history"]:
+        print("This user has no weight history")
+        return
+    
+    for index, record in enumerate(user["weight_history"], start=1):
+        print(f"{index}. {record['date']} - {record['weight']} {record['unit']}")
+
+    option = get_integer("Enter your choice to update any record: ")
+
+    if option > len(user["weight_history"]):
+        print("Invalid option")
+        return
+
+    selected_record = user["weight_history"][option - 1]
+
+    print("1. Edit weight")
+    print("2. Edit date")
+
+    edit_option = get_integer("Select what you want to edit: ")
+
+    if edit_option == 1:
+        selected_record["weight"] = get_float("Enter new weight in kg: ")
+
+    elif edit_option == 2:
+        while True:
+            new_date = input("Enter new date (DD/MM/YYYY): ")
+
+            try:
+                datetime.strptime(new_date, "%d/%m/%Y")
+            except ValueError:
+                print("Invalid date")
+                continue
+
+            selected_record["date"] = new_date
+            break
+
+    else:
+        print("Invalid option")
+        return
+
+    update_current_weight(user)
+    save_data()
+
+    print("Weight record updated successfully")
+
+
+# Function to delete one's weight record
+def delete_weight_record():
+    if not entries:
+        print("No users found")
+        return
+    
+    user = menu_for_choice_to_look_for_users()
+
+    if not user["weight_history"]:
+        print("This user has no weight history")
+        return
+    
+    for index, record in enumerate(user["weight_history"], start=1):
+        print(f"{index}. {record['date']} - {record['weight']} {record['unit']}")
+
+    option = get_integer("Enter your choice to delete any record: ")
+
+    if option > len(user["weight_history"]):
+        print("Invalid option")
+        return
+
+    selected_record = user["weight_history"][option - 1]
+
+    confirmation = input("Are you sure? (Y/N): ").upper()
+
+    if confirmation != "Y":
+        print("Deletion cancelled")
+        return
+
+    user["weight_history"].remove(selected_record)
+
+    update_current_weight(user)
+    save_data()
+
+    print("Weight record deleted successfully")    
 
 
 # Function to display one's weight history 
@@ -353,7 +470,6 @@ def display_weight_history():
 
 # Function that displays weight stats (highest, lowest, current, gained/lost)
 def display_weight_stats():
-
     if not entries:
         print("No users found")
         return
@@ -431,7 +547,9 @@ def main_menu():
     print("10. Edit entry")
     print("11. Delete entry")
     print("12. View calorie recommendetions")
-    print("13. Exit")
+    print("13. Edit weight record")
+    print("14. Delete weight record")
+    print("15. Exit")
 
     option = get_integer("Select an option: ")
 
@@ -471,7 +589,13 @@ def main_menu():
     elif option == 12:
         calorie_recommendations()
 
-    elif option == 13: 
+    elif option == 13:
+        edit_weight_record()
+
+    elif option == 14:
+        delete_weight_record()
+
+    elif option == 15: 
         print("Bye")
         return False
         
