@@ -27,6 +27,13 @@ from weight_records import (
     delete_weight_record
 )
 
+from calorie_records import (
+    add_calorie_record,
+    display_calorie_history,
+    display_daily_calorie_stats,
+    edit_calorie_record,
+    delete_calorie_record
+)
 # Main Menu 
 def main_menu():
     print("Main Menu")

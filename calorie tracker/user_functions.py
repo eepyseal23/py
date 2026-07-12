@@ -149,7 +149,11 @@ def display_single_entry():
     user = menu_for_choice_to_look_for_users()
 
     for key, value in user.items():
-        if key != "weight_history":  # To avoid printing the long list of weights
-            print(key, value)
+        if key != "weight_history" and key != "calorie_history":
+            print(key, value) 
+
+    if "calorie_history" not in user:
+        user["calorie_history"] = []
 
     print(f"Weight records: {len(user['weight_history'])}")
+    print(f"Calorie records: {len(user['calorie_history'])}")
