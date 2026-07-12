@@ -34,6 +34,7 @@ from calorie_records import (
     edit_calorie_record,
     delete_calorie_record
 )
+
 # Main Menu 
 def main_menu():
     print("Main Menu")
@@ -48,11 +49,15 @@ def main_menu():
     print("9. Display weight stats")
     print("10. Edit entry")
     print("11. Delete entry")
-    print("12. View calorie recommendetions")
+    print("12. View calorie recommendations")
     print("13. Edit weight record")
     print("14. Delete weight record")
     print("15. Add calorie record")
-    print("16. Exit")
+    print("16. View calorie history")
+    print("17. View daily calorie stats")
+    print("18. Edit calorie record")
+    print("19. Delete calorie record")
+    print("20. Exit")
 
     option = get_integer("Select an option: ")
 
@@ -101,7 +106,19 @@ def main_menu():
     elif option == 15:
         add_calorie_record()
 
-    elif option == 16: 
+    elif option == 16:
+        display_calorie_history()
+
+    elif option == 17:
+        display_daily_calorie_stats()
+
+    elif option == 18:
+        edit_calorie_record()
+
+    elif option == 19:
+        delete_calorie_record()
+
+    elif option == 20: 
         print("Bye")
         return False
         
